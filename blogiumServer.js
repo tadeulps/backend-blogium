@@ -29,14 +29,14 @@ app.get("/posts",(req,res)=>{
 
 app.get("/posts/:id",(req,res)=>{
     const id=parseInt(req.params.id);
-    res.send(posts[id])
+    res.send(posts.find((r)=>r.id===id))
 })
 
 app.post("/posts",(req,res)=>{
     const post=req.body;
     idPostCounter++
     post.id=idPostCounter
-    post.contentPreview=post.content.substr(3,80)+"..."
+    post.contentPreview=post.content.replace("</p>",'80').substr(3,80)+"..."
     post.commentCount=0
     posts.push(post)
     res.send(post)
