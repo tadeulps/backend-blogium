@@ -4,6 +4,8 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
+let idPostCounter=0;
+let idCommentsCounter=0;
 
 const posts=[{
     id: 0,
@@ -32,11 +34,13 @@ app.get("/posts/:id",(req,res)=>{
 
 app.post("/posts",(req,res)=>{
     const post=req.body;
-    post.id=posts.length
+    idPostCounter++
+    post.id=idPostCounter
     post.contentPreview=post.content.substr(3,80)+"..."
     post.commentCount=0
     posts.push(post)
     res.send(post)
+    console.log(idPostCounter)
 });
 
 app.get("/posts/:id/comments",(req,res)=>{
@@ -47,10 +51,13 @@ app.get("/posts/:id/comments",(req,res)=>{
 app.post("/posts/:id/comments",(req,res)=>{
     const id=parseInt(req.params.id);
     const comment=req.body;
-    comment.id=comments.length
+    idCommentsCounter++
+    comment.id=idCommentsCounter
     comments.push(comment)
     posts[id].commentCount++
     res.send(comment)
+    console.log(idCommentsCounter)
+    
 })
 
 app.listen(4000)
